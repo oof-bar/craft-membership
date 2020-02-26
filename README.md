@@ -2,7 +2,7 @@
 
 > Give your users special access based on their [Commerce Subscriptions](https://docs.craftcms.com/commerce/v3/subscriptions.html).
 
-The Membership plugin works by listening to key [Subscription Events](https://docs.craftcms.com/commerce/v3/events.html#subscription-events) in Craft Commerce, and moving the Subscriber in (or out) of groups based on rules or “Grants” configured in the Control Panel.
+The Membership plugin works by listening to key [Subscription Events](https://docs.craftcms.com/commerce/v3/events.html#subscription-events) in Craft Commerce, and moving the Subscriber into (or out of) groups based on rules or “Grants” configured in the Control Panel.
 
 Much of it could be implemented in a module specific to your application—this plugin is primarily intended for those who need a simple system for granting access based on active Subscriptions.
 
