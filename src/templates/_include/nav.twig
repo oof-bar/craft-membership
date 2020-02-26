@@ -1,0 +1,22 @@
+{% set tabs = {
+    grants: {
+        label: 'Grants' | t('membership'),
+        path: 'membership/grants'
+    },
+    logs: {
+        label: 'Logs' | t('membership'),
+        path: 'membership/logs'
+    }
+} %}
+
+<nav>
+    <ul>
+        {% for key, tab in tabs %}
+            <li>
+                <a
+                    href="{{ cpUrl(tab.path) }}"
+                    {% if key == activeTab ?? null %}class="sel"{% endif %}>{{ tab.label }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</nav>

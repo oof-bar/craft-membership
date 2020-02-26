@@ -1,0 +1,43 @@
+{
+    "name": "oofbar/membership",
+    "description": "Give your users special access based on their Commerce Subscriptions.",
+    "type": "craft-plugin",
+    "version": "1.0.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "commerce",
+        "membership",
+        "subscriptions"
+    ],
+    "support": {
+        "docs": "https://github.com/oof-bar/membership/blob/master/README.md",
+        "issues": "https://github.com/oof-bar/membership/issues"
+    },
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "oof. Studio",
+            "homepage": "https://oof.studio/"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.4.0",
+        "craftcms/commerce": "^3.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+          "oofbar\\membership\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Membership",
+        "handle": "membership",
+        "hasCpSettings": true,
+        "hasCpSection": false,
+        "changelogUrl": "https://raw.githubusercontent.com/oof-bar/membership/master/CHANGELOG.md",
+        "class": "oofbar\\membership\\Membership"
+    }
+}

@@ -1,0 +1,55 @@
+{% extends '_layouts/cp' %}
+
+{% set title = grant.id ? 'Edit {grantName}' | t('membership', { grantName: grant.name }) : 'New Grant' | t('membership') %}
+
+{% import "_includes/forms" as forms %}
+
+{% block content %}
+    <form method="POST">
+        {{ csrfInput() }}
+        {{ actionInput('membership/grants/save') }}
+        {{ hiddenInput('id', grant.id) }}
+        {{ redirectInput('membership/grants') }}
+
+        {{ forms.textField({
+            label: 'Grant Name' | t('membership'),
+            instructions: 'A label or identifier for this grant.' | t('membership'),
+            id: 'name',
+            name: 'name',
+            value: grant.name,
+            errors: grant.getErrors('name'),
+            first: true
+        }) }}
+
+        {{ forms.lightswitchField({
+            label: 'Enabled?' | t('membership'),
+            instructions: 'Whether or not this grant will apply to new or expiring Subscriptions.' | t('membership'),
+            id: 'enabled',
+            name: 'enabled',
+            on: grant.enabled,
+            errors: grant.getErrors('enabled')
+        }) }}
+
+        {{ forms.selectField({
+            label: 'Plan' | t('membership'),
+            instructions: 'Select the plan this grant applies to.' | t('memberhsip'),
+            id: 'planId',
+            name: 'planId',
+            options: plans | map((p) => { value: p.id, label: p.name }),
+            value: grant.planId,
+            errors: grant.getErrors('planId')
+        }) }}
+
+        {{ forms.selectField({
+            label: 'User Group' | t('membership'),
+            instructions: 'Pick the group that users will be added to.' | t('memberhsip'),
+            id: 'userGroupId',
+            name: 'userGroupId',
+            options: userGroups | map((ug) => { value: ug.id, label: ug.name }),
+            value: grant.userGroupId,
+            errors: grant.getErrors('userGroupId')
+        }) }}
+
+        <input type="submit" class="btn submit" value="{{ 'Save' | t('membership') }}">
+    </form>
+{% endblock %}

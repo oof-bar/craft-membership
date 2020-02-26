@@ -1,0 +1,25 @@
+{% set logs = craft.membership.logs.getMessages({ subscriptionId: subscription.id }) %}
+
+{% if logs | length %}
+    <div class="pane">
+        <h2>Membership Logs</h2>
+        <table class="fullwidth">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Message</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                    <tr>
+                        <td><code>{{ log.id }}</code></td>
+                        <td>{{ log.message }}</td>
+                        <td>{{ log.dateCreated | date('short') }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endif %}
