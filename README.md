@@ -16,6 +16,8 @@ Because Membership operates on User Groups (not Permissions, directly), it's goo
 
 You can create multiple Grants per Plan—for example, if you wanted to structure your permissions in an additive way, you could grant _Gold_ supporters access to all three groups. In this way, you can be sure that benefits granted to lower support tiers always bubble up to higher ones.
 
+The plugin will never remove a User from a Group that is granted by another of their active Subscriptions: if `Plan A` and `Plan B` both move Users into `Group 1`, but `Plan B` also adds users to `Group 2`, cancelling a Subscription to `Plan B` won't remove the User from `Group 1`, if their `Plan A` Subscription is still active.
+
 ## Usage
 
 All the configuration happens via the Control Panel. Go to the Settings section, and click on the _Membership_ tile to manage _Grants_.
@@ -46,7 +48,7 @@ We have a lightweight logging system set up so that admin have some visibility i
 
 Craft and Yii provide a rich system of Events to help developers alter the behavior of built-in and “pluggable” functionality.
 
-We emit two events: one just before a permission is about to be granted, and one when a permission is about to be revoke. Keep in mind that these are _in addition to_ Craft's own permissions events!
+We emit two events: one just before a permission is about to be granted, and one when a permission is about to be revoked. Keep in mind that these are _in addition to_ Craft's own permissions events!
 
 ### `Permissions::EVENT_BEFORE_GRANT_PERMISSION`
 
@@ -81,7 +83,7 @@ Event::on(
     Permissions::class,
     Permissions::EVENT_BEFORE_REVOKE_PERMISSION,
     function (RevokePermissionsEvent $e) {
-        // Optionally: prevent the revokation from occurring, based on some criteria!
+        // Optionally: prevent the revocation from occurring, based on some criteria!
         $e->isValid = false;
     });
 ```
