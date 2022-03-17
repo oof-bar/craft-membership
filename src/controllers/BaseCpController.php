@@ -26,7 +26,7 @@ class BaseCpController extends BaseController
     /**
      * @inheritdoc
      */
-    public function beforeAction($action)
+    public function beforeAction($action): bool
     {
         $this->requirePermission('accessCp');
 

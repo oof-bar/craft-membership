@@ -26,7 +26,7 @@ class BaseAdminController extends BaseController
     /**
      * @inheritdoc
      */
-    public function beforeAction($action)
+    public function beforeAction($action): bool
     {
         $this->requireAdmin();
 
