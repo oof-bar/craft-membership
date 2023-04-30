@@ -256,25 +256,4 @@ class Permissions extends Component
 
         return true;
     }
-
-    /**
-     * Compares a list of UserGroups and returns anything present in both sets.
-     * 
-     * @param UserGroup[] $a
-     * @param UserGroup[] $b
-     * @return UserGroup[] Overlap between the sets
-     */
-    private function _getGroupsOverlap(array $a, array $b): array
-    {
-        $overlap = [];
-        $bIds = ArrayHelper::getColumn($b, 'id');
-
-        foreach ($a as $group) {
-            if (in_array($group->id, $b)) {
-                $overlap[] = $group;
-            }
-        }
-
-        return $overlap;
-    }
 }
