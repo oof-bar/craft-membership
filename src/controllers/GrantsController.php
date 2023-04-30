@@ -97,7 +97,6 @@ class GrantsController extends Controller
     public function actionSave()
     {
         $this->requirePostRequest();
-        $this->requireAdmin();
 
         $request = Craft::$app->getRequest();
 
