@@ -1,0 +1,88 @@
+{% extends '_layouts/cp' %}
+
+{% set title = 'Membership Grants' %}
+
+{% set crumbs = [
+    { label: 'Membership' | t('membership'), url: url('membership') },
+] %}
+
+{% block actionButton %}
+    {% if canCreateGrants %}
+        <a href="{{ cpUrl('membership/grants/new') }}" class="btn submit">New Grant</a>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if grants | length %}
+        <table id="grants" class="data fullwidth">
+            <thead>
+                <tr>
+                    <th>{{ 'Name' | t('membership') }}</th>
+                    <th>{{ 'Plan' | t('membership') }}</th>
+                    <th></th>
+                    <th>{{ 'User Group' | t('membership') }}</th>
+                    <th class="thin"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for grant in grants %}
+                    {% set plan = grant.getPlan() %}
+                    {% set group = grant.getUserGroup() %}
+
+                    <tr data-id="{{ grant.id }}" data-name="{{ grant.name }}">
+                        <td>
+                            <span class="status {{ grant.enabled ? 'active' : 'disabled' }}"></span>
+                            <a href="{{ cpUrl("membership/grants/#{grant.id}") }}">{{ grant.name }}</a>
+                        </td>
+                        <td><a href="{{ cpUrl("commerce/settings/subscriptions/plan/#{plan.id}") }}">{{ plan.name }}</a></td>
+                        <td>&rarr;</td>
+                        <td><a href="{{ cpUrl("settings/users/groups/#{group.id}") }}">{{ group.name }}</a></td>
+                        <td>
+                            <button
+                                class="delete icon"
+                                role="button"
+                                title="Delete grant"></button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="zilch">
+            <p>{{ 'No grants have been configured, yet.' | t('membership') }}</p>
+
+            {% if plans is empty and groups is empty %}
+                <p class="largetext">
+                    {{ 'To set up a grant, you must first define a [subscription plan]({plansUrl}) and a [user group]({groupsUrl}).' | t('membership', {
+                        plansUrl: cpUrl('commerce/store-settings/subscription-plans'),
+                        groupsUrl: cpUrl('settings/users/groups'),
+                    }) | md(inlineOnly = true) }}
+                </p>
+            {% elseif plans is empty %}
+                <p class="largetext">
+                    {{ 'To set up a grant, you must first define a [subscription plan]({link}).' | t('membership', {
+                        link: cpUrl('commerce/store-settings/subscription-plans'),
+                    }) | md(inlineOnly = true) }}
+                </p>
+            {% elseif groups is empty %}
+                <p class="largetext">
+                    {{ 'To set up a grant, you must first define a [user group]({groupsUrl}).' | t('membership', {
+                        groupsUrl: cpUrl('settings/users'),
+                    }) | md(inlineOnly = true) }}
+                </p>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% set confirmationMessage = 'Are you sure you want to delete the {name} grant?' | t('membership') %}
+
+{% js %}
+    var adminTable = new Craft.AdminTable({
+        tableSelector: '#grants',
+        noObjectsSelector: '#no-grants',
+        newObjectBtnSelector: '#new-grant-button',
+        deleteAction: 'membership/grants/delete',
+        confirmDeleteMessage: '{{ confirmationMessage | e('js') }}'
+    });
+{% endjs %}

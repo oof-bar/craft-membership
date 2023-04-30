@@ -1,21 +1,16 @@
 <?php
 /**
- * Membership plugin for Craft CMS 3.x
+ * Membership plugin for Craft CMS 4.x
  *
  * Give your users special access based on their Commerce Subscriptions.
  *
  * @link      https://oof.studio/
- * @copyright Copyright (c) 2020 oof. Studio
+ * @copyright Copyright (c) 2023 oof. Studio
  */
 
 namespace oofbar\membership\records;
 
-use Craft;
 use craft\db\ActiveRecord;
-use craft\records\UserGroup as UserGroupRecord;
-
-use craft\commerce\Plugin as Commerce;
-use craft\commerce\records\Plan as PlanRecord;
 
 /**
  * Grant Record

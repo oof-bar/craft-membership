@@ -2,7 +2,6 @@
     "name": "oofbar/membership",
     "description": "Give your users special access based on their Commerce Subscriptions.",
     "type": "craft-plugin",
-    "version": "1.0.0",
     "keywords": [
         "craft",
         "cms",
@@ -24,8 +23,8 @@
         }
     ],
     "require": {
-        "craftcms/cms": "^3.4.0",
-        "craftcms/commerce": "^3.0.0"
+        "craftcms/cms": "^4.0.0",
+        "craftcms/commerce": "^4.0.0"
     },
     "autoload": {
         "psr-4": {

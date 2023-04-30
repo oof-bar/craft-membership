@@ -1,8 +1,15 @@
 <?php
+/**
+ * Membership plugin for Craft CMS 4.x
+ *
+ * Give your users special access based on their Commerce Subscriptions.
+ *
+ * @link      https://oof.studio/
+ * @copyright Copyright (c) 2023 oof. Studio
+ */
 
 namespace oofbar\membership\migrations;
 
-use Craft;
 use craft\db\Migration;
 use craft\helpers\MigrationHelper;
 

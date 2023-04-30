@@ -1,21 +1,19 @@
 <?php
 /**
- * Membership plugin for Craft CMS 3.x
+ * Membership plugin for Craft CMS 4.x
  *
  * Give your users special access based on their Commerce Subscriptions.
  *
  * @link      https://oof.studio/
- * @copyright Copyright (c) 2020 oof. Studio
+ * @copyright Copyright (c) 2023 oof. Studio
  */
 
 namespace oofbar\membership\services;
 
-use Craft;
 use craft\base\Component;
 use craft\db\Query;
 
 use craft\commerce\base\Plan;
-
 use oofbar\membership\models\Grant;
 use oofbar\membership\records\Grant as GrantRecord;
 
@@ -31,7 +29,7 @@ use oofbar\membership\records\Grant as GrantRecord;
 class Grants extends Component
 {
     /**
-     * Get Grants matching the passed criteria.
+     * Get Grants matching the provided criteria.
      * 
      * @param array $criteria Criteria to apply to the Query.
      * @return Grant[]
@@ -65,7 +63,7 @@ class Grants extends Component
     }
 
     /**
-     * Gets grants for the passed Plan.
+     * Gets grants for the provided Plan.
      * 
      * @param Plan $plan
      * @return Grant[]
@@ -131,7 +129,7 @@ class Grants extends Component
     }
 
     /**
-     * Deletes the passed Grant.
+     * Deletes the provided Grant.
      * 
      * @param Grant $grant
      * @return bool Whether or not the deletion was successful.
@@ -161,7 +159,7 @@ class Grants extends Component
                 'dateUpdated',
                 'uid'
             ])
-            ->from('{{%membership_grants}}')
+            ->from(GrantRecord::tableName())
             ->orderBy('dateCreated ASC');
     }
 
