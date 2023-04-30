@@ -95,7 +95,7 @@ class Permissions extends Component
             // If it was prevented, log a message and continue:
             if (!$event->isValid) {
                 $logger->log(new Message([
-                    'message' => Craft::t('membership', 'A plugin prevented the owner from being added to User Group ID #{groupId}.', ['groupId' => $grant->userGroupId]),
+                    'message' => Craft::t('membership', 'A plugin prevented the owner from being added to user group ID #{groupId}.', ['groupId' => $grant->userGroupId]),
                     'grantId' => $grant->id,
                     'subscriptionId' => $subscription->id,
                 ]));
@@ -114,7 +114,7 @@ class Permissions extends Component
             $owner->setGroups($ownerGroups);
 
             $logger->log(new Message([
-                'message' => Craft::t('membership', 'Added the owner to User Group ID #{groupId} ({groupName}) when they signed up for {planName}.', [
+                'message' => Craft::t('membership', 'Added the owner to user group ID #{groupId} ({groupName}) when they signed up for {planName}.', [
                     'groupId' => $group->id,
                     'groupName' => $group->name,
                     'planName' => $plan->name,
@@ -167,12 +167,14 @@ class Permissions extends Component
             // Disabled grants don't affect permissions:
             if (!$grant->enabled) {
                 $logger->log(new Message([
-                    'message' => Craft::t('membership', 'The owner was’t removed from Group ID #{groupId} ({groupName}) because the grant was disabled.', [
+                    'message' => Craft::t('membership', 'Grant ID #{grantId} ({grantName}) was disabled, so the owner was not removed from user group ID #{groupId} ({groupName}).', [
+                        'grantId' => $grant->id,
+                        'grantName' => $grant->name,
                         'groupId' => $group->id,
                         'groupName' => $group->name
                     ]),
                     'grantId' => $grant->id,
-                    'subscriptionId' => $subscription->id
+                    'subscriptionId' => $subscription->id,
                 ]));
 
                 continue;
@@ -181,9 +183,12 @@ class Permissions extends Component
             // We also don't want to revoke a permission granted by a different (active) Subscription:
             if (in_array($group->id, $protectedGroupIds)) {
                 $logger->log(new Message([
-                    'message' => Craft::t('membership', 'Another active Subscription prevented the owner from being removed from Group ID #{groupId}.', ['groupId' => $group->id]),
+                    'message' => Craft::t('membership', 'Another active subscription prevented the owner from being removed from user group ID #{groupId} ({groupName}).', [
+                        'groupId' => $group->id,
+                        'groupName' => $group->name,
+                    ]),
                     'grantId' => $grant->id,
-                    'subscriptionId' => $subscription->id
+                    'subscriptionId' => $subscription->id,
                 ]));
 
                 continue;
@@ -192,7 +197,7 @@ class Permissions extends Component
             // They may not be in it:
             if (!$owner->isInGroup($group->id)) {
                 $logger->log(new Message([
-                    'message' => Craft::t('membership', 'The owner wasn’t in User Group ID #{groupId} ({groupName}), so no action was taken.', [
+                    'message' => Craft::t('membership', 'The owner wasn’t in user group ID #{groupId} ({groupName}), so no action was taken.', [
                         'groupId' => $group->id,
                         'groupName' => $group->name
                     ]),
@@ -213,7 +218,7 @@ class Permissions extends Component
             // If it was prevented, log a message and continue:
             if (!$event->isValid) {
                 $logger->log(new Message([
-                    'message' => Craft::t('membership', 'A plugin prevented the owner from being removed from User Group ID #{groupId} ({groupName}).', [
+                    'message' => Craft::t('membership', 'A plugin prevented the owner from being removed from user group ID #{groupId} ({groupName}).', [
                         'groupId' => $group->id,
                         'groupName' => $group->name
                     ]),
@@ -240,7 +245,7 @@ class Permissions extends Component
             $owner->setGroups($newGroups);
 
             $logger->log(new Message([
-                'message' => Craft::t('membership', 'Removed the owner from User Group ID #{groupId} ({groupName}).', [
+                'message' => Craft::t('membership', 'Removed the owner from user group ID #{groupId} ({groupName}).', [
                     'groupId' => $group->id,
                     'groupName' => $group->name
                 ]),
