@@ -12,7 +12,8 @@ The plugin handles creation, cancellation, and expiry of subscriptions, as well 
 
 This plugin requires Craft CMS 4 and Commerce 4. Version 1.x is compatible with Craft 3 and Commerce 3.
 
-> **Warning:** In order for subscriptions to work at all, **you must have Stripe webhooks configured**! Stripe has an excellent CLI to help [forward webhooks in development environments](https://stripe.com/docs/webhooks/test).
+> **Warning**
+> In order for subscriptions to work at all, **you must have Stripe webhooks configured**! Stripe has an excellent CLI to help [forward webhooks in development environments](https://stripe.com/docs/webhooks/test).
 
 ### Upgrading from Membership 1.x
 
@@ -51,13 +52,15 @@ You can create multiple grants per plan—for example, if you wanted to structur
 
 The plugin will never remove a user from a group that is granted by another of their active subscriptions: if `Plan A` and `Plan B` both move Users into `Group 1`, but `Plan B` also adds users to `Group 2`, cancelling a subscription to `Plan B` won't remove the user from `Group 1`, if their `Plan A` subscription is still active.
 
-> **Note:** Changing the configuration of a grant will _not_ update existing users’ groups.
+> **Note**
+> Changing the configuration of a grant will _not_ update existing users’ groups.
 
 ## Usage
 
 All the configuration happens via the Control Panel. Go to the **Settings** section, and click on the **Membership** tile to manage **Grants**.
 
-> **Note:** Grants are _not_ stored in project config, and therefore must be configured in each environment. This is currently a [limitation](https://github.com/oof-bar/craft-membership/issues/5) of Commerce. You may need to navigate to the settings page directly, on your production environment—the path is always `settings/membership/grants`.
+> **Note**
+> Grants are _not_ stored in project config, and therefore must be configured in each environment. This is currently a [limitation](https://github.com/oof-bar/craft-membership/issues/5) of Commerce. You may need to navigate to the settings page directly, on your production environment—the path is always `settings/membership/grants`.
 
 ### Front-end
 
@@ -79,7 +82,8 @@ In addition to checking groups, you can also directly check permissions: For exa
 {% endif %}
 ```
 
-> **Warning:** Automated management of user permissions via groups can be dangerous. Consider defining a [process or policy](https://putyourlightson.com/articles/securing-your-craft-site-in-2022-part-3) for reviewing and deploying changes to your project’s permissions scheme.
+> **Warning**
+> Automated management of user permissions via groups can be dangerous. Consider defining a [process or policy](https://putyourlightson.com/articles/securing-your-craft-site-in-2022-part-3) for reviewing and deploying changes to your project’s permissions scheme.
 
 ## Auditing
 
