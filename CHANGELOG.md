@@ -1,5 +1,11 @@
 # Membership Plugin Changelog
 
+## 2.0.1 - 2023-04-30
+
+### Changed
+
+- Fixed an error when saving a grant in an environment that has `allowAdminChanges` disabled.
+
 ## 2.0.0 - 2023-04-30
 
 ### Added
