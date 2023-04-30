@@ -11,6 +11,7 @@
 namespace oofbar\membership\events;
 
 use craft\events\CancelableEvent;
+use oofbar\membership\models\Grant;
 
 /**
  * Grant Permission Event
@@ -26,5 +27,5 @@ class GrantPermissionEvent extends CancelableEvent
     /**
      * @var Grant The model containing information about the permission that is about to be granted.
      */
-    public $grant;
+    public Grant $grant;
 }
