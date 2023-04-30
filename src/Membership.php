@@ -124,7 +124,10 @@ class Membership extends Plugin
         $view = Craft::$app->getView();
 
         $view->hook('cp.commerce.subscriptions.edit.content', function (array &$context) use ($view) {
-            return $view->renderTemplate('membership/_hooks/cp.commerce.subscriptions.edit', $context);
+            return $view->renderTemplate('membership/_hooks/cp.commerce.subscriptions.edit', [
+                'subscription' => $context['subscription'],
+                'canManageGrants' => Craft::$app->getUser()->getIdentity()->admin,
+            ]);
         });
     }
 
