@@ -10,7 +10,7 @@ The plugin handles creation, cancellation, and expiry of subscriptions, as well 
 
 ## Requirements
 
-This plugin requires Craft CMS 4 and Commerce 4. Version 1.x is compatible with Craft 3 and Commerce 3.
+This plugin requires Craft CMS 4 and Commerce 4. [Version 1.x](https://github.com/oof-bar/craft-membership/tree/v1) is compatible with Craft 3 and Commerce 3.
 
 > **Warning**
 > In order for subscriptions to work at all, **you must have Stripe webhooks configured**! Stripe has an excellent CLI to help [forward webhooks in development environments](https://stripe.com/docs/webhooks/test).
