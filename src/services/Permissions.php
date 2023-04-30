@@ -128,7 +128,7 @@ class Permissions extends Component
     }
 
     /**
-     * Revokes permissions based on the Mermbership's Pass settings.
+     * Revokes permissions based on the Membership's Pass settings.
      * 
      * As with the sister `grant` method, this one accepts a sort of "override" for the default behavior of using the Plan attached to the Subscription. In cases where a User is switching to a new Plan, we would rather explicitly pass which Plan they're moving *away from* or *to*.
      * 
