@@ -20,6 +20,7 @@
 - `oofbar\membership\controllers\BaseAdminController`
 - `oofbar\membership\controllers\LogsController`
 - `templates/_include/nav.twig`
+- All custom permissions
 
 ## 1.0.0 - 2020-02-26
 

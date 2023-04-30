@@ -23,6 +23,7 @@ There are a few important changes to note, in case you’ve been using any inter
 - `oofbar\membership\controllers\BaseController` has been removed. The convenience features it implemented are built into Craft 4.
 - `oofbar\membership\controllers\BaseCpController` and `oofbar\membership\controllers\BaseAdminController` have been removed. Permission checks are now done in individual controllers.
 - `oofbar\membership\controllers\LogsController` has been removed, as it was never used.
+- Custom permissions (`membership-manageGrants` and `membership-viewLogs`) were removed, as they were never checked. Access has been consolidated to `admin` users.
 
 ## Installation
 
