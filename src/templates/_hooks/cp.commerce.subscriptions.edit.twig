@@ -1,4 +1,5 @@
 {% set logs = craft.membership.logs.getMessages({ subscriptionId: subscription.id }) %}
+{% set grantsById = craft.membership.grants.getAllGrants() | index('id') %}
 
 {% if logs | length %}
     <div class="pane">
@@ -7,14 +8,23 @@
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>Grant</th>
                     <th>Message</th>
                     <th>Date</th>
                 </tr>
             </thead>
             <tbody>
                 {% for log in logs %}
+                    {% set grant = grantsById[log.grantId] %}
                     <tr>
                         <td><code>{{ log.id }}</code></td>
+                        <td>
+                            {% if canManageGrants %}
+                                <a href="{{ cpUrl("membership/grants/#{log.grantId}") }}">{{ grant.name }}</a>
+                            {% else %}
+                                {{ grant.name }}
+                            {% endif %}
+                        </td>
                         <td>{{ log.message }}</td>
                         <td>{{ log.dateCreated | date('short') }}</td>
                     </tr>

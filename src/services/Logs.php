@@ -1,11 +1,11 @@
 <?php
 /**
- * Membership plugin for Craft CMS 3.x
+ * Membership plugin for Craft CMS 4.x
  *
  * Give your users special access based on their Commerce Subscriptions.
  *
  * @link      https://oof.studio/
- * @copyright Copyright (c) 2020 oof. Studio
+ * @copyright Copyright (c) 2023 oof. Studio
  */
 
 namespace oofbar\membership\services;
@@ -102,7 +102,7 @@ class Logs extends Component
                 'dateUpdated',
                 'uid'
             ])
-            ->from('{{%membership_logs}}')
+            ->from(MessageRecord::tableName())
             ->orderBy('id DESC');
     }
 }

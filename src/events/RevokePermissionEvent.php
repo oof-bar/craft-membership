@@ -1,16 +1,17 @@
 <?php
 /**
- * Membership plugin for Craft CMS 3.x
+ * Membership plugin for Craft CMS 4.x
  *
  * Give your users special access based on their Commerce Subscriptions.
  *
  * @link      https://oof.studio/
- * @copyright Copyright (c) 2020 oof. Studio
+ * @copyright Copyright (c) 2023 oof. Studio
  */
 
 namespace oofbar\membership\events;
 
 use craft\events\CancelableEvent;
+use oofbar\membership\models\Grant;
 
 /**
  * Revoke Permission Event
@@ -26,5 +27,5 @@ class RevokePermissionEvent extends CancelableEvent
     /**
      * @var Grant The model containing information about the permission that is about to be revoked.
      */
-    public $grant;
+    public Grant $grant;
 }

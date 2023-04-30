@@ -1,11 +1,11 @@
 <?php
 /**
- * Membership plugin for Craft CMS 3.x
+ * Membership plugin for Craft CMS 4.x
  *
  * Give your users special access based on their Commerce Subscriptions.
  *
  * @link      https://oof.studio/
- * @copyright Copyright (c) 2020 oof. Studio
+ * @copyright Copyright (c) 2023 oof. Studio
  */
 
 namespace oofbar\membership\services;
@@ -34,14 +34,14 @@ use oofbar\membership\models\Message;
 class Permissions extends Component
 {
     /**
-     * @event oofbar\memberhsip\events\GrantPermission
+     * @event oofbar\membership\events\GrantPermission
      */
-    const EVENT_BEFORE_GRANT_PERMISSION = 'beforeGrantPermission';
+    public const EVENT_BEFORE_GRANT_PERMISSION = 'beforeGrantPermission';
 
     /**
-     * @event oofbar\memberhsip\events\RevokePermission
+     * @event oofbar\membership\events\RevokePermission
      */
-    const EVENT_BEFORE_REVOKE_PERMISSION = 'beforeRevokePermission';
+    public const EVENT_BEFORE_REVOKE_PERMISSION = 'beforeRevokePermission';
 
     /**
      * Grants permissions for the passed Subscription.
@@ -55,12 +55,12 @@ class Permissions extends Component
     public function grantPermissionsForSubscription(Subscription $subscription, Plan $plan = null): bool
     {
         $membership = Membership::getInstance();
-        $logger = $membership->logs;
+        $logger = $membership->getLogs();
 
         $plan = $plan ?? $subscription->getPlan();
         $owner = $subscription->getSubscriber();
 
-        $grants = $membership->grants->getGrantsForPlan($plan);
+        $grants = $membership->getGrants()->getGrantsForPlan($plan);
 
         foreach ($grants as $grant) {
             $group = $grant->getUserGroup();
@@ -73,12 +73,13 @@ class Permissions extends Component
             // They may already be in it:
             if ($owner->isInGroup($grant->userGroupId)) {
                 $logger->log(new Message([
-                    'message' => Craft::t('membership', 'The owner already belonged to group ID #{groupId} ({groupName}).', [
+                    'message' => Craft::t('membership', 'The owner already belonged to group ID #{groupId} ({groupName}) when they signed up for {planName}.', [
                         'groupId' => $group->id,
-                        'groupName' => $group->name
+                        'groupName' => $group->name,
+                        'planName' => $plan->name,
                     ]),
                     'grantId' => $grant->id,
-                    'subscriptionId' => $subscription->id
+                    'subscriptionId' => $subscription->id,
                 ]));
 
                 continue;
@@ -94,9 +95,9 @@ class Permissions extends Component
             // If it was prevented, log a message and continue:
             if (!$event->isValid) {
                 $logger->log(new Message([
-                    'message' => Craft::t('membership', 'A plugin prevented the owner from being added to User Group ID #{groupId}.', ['groupId' => $grant->userGroupId]),
+                    'message' => Craft::t('membership', 'A plugin prevented the owner from being added to user group ID #{groupId}.', ['groupId' => $grant->userGroupId]),
                     'grantId' => $grant->id,
-                    'subscriptionId' => $subscription->id
+                    'subscriptionId' => $subscription->id,
                 ]));
 
                 continue;
@@ -106,19 +107,20 @@ class Permissions extends Component
             $ownerGroups = $owner->getGroups();
             $ownerGroups[] = $group;
 
-            // Assign by pluckin their IDs:
+            // Assign by plucking their IDs:
             Craft::$app->getUsers()->assignUserToGroups($owner->id, ArrayHelper::getColumn($ownerGroups, 'id'));
 
             // Set them back on the User, clearing the cached values:
             $owner->setGroups($ownerGroups);
 
             $logger->log(new Message([
-                'message' => Craft::t('membership', 'Added the owner to User Group ID #{groupId} ({groupName}).', [
+                'message' => Craft::t('membership', 'Added the owner to user group ID #{groupId} ({groupName}) when they signed up for {planName}.', [
                     'groupId' => $group->id,
-                    'groupName' => $group->name
+                    'groupName' => $group->name,
+                    'planName' => $plan->name,
                 ]),
                 'grantId' => $grant->id,
-                'subscriptionId' => $subscription->id
+                'subscriptionId' => $subscription->id,
             ]));
         }
 
@@ -126,7 +128,7 @@ class Permissions extends Component
     }
 
     /**
-     * Revokes permissions based on the Mermbership's Pass settings.
+     * Revokes permissions based on the Membership's Pass settings.
      * 
      * As with the sister `grant` method, this one accepts a sort of "override" for the default behavior of using the Plan attached to the Subscription. In cases where a User is switching to a new Plan, we would rather explicitly pass which Plan they're moving *away from* or *to*.
      * 
@@ -137,13 +139,13 @@ class Permissions extends Component
     public function revokePermissionsForSubscription(Subscription $subscription, Plan $plan = null): bool
     {
         $membership = Membership::getInstance();
-        $logger = $membership->logs;
+        $logger = $membership->getLogs();
 
         $plan = $plan ?? $subscription->getPlan();
         $owner = $subscription->getSubscriber();
 
         // Get the Grants we'll try and revoke:
-        $grants = $membership->grants->getGrantsForPlan($plan);
+        $grants = $membership->getGrants()->getGrantsForPlan($plan);
 
         // Get the User's *other* Subscriptions, if any:
         $subscriptions = Subscription::find()
@@ -152,7 +154,7 @@ class Permissions extends Component
             ->all();
 
         // Fetch the Grants for those Subscriptions...
-        $protectedGrants = $membership->grants->getGrants([
+        $protectedGrants = $membership->getGrants()->getGrants([
             'planId' => ArrayHelper::getColumn($subscriptions, 'planId')
         ]);
 
@@ -165,12 +167,14 @@ class Permissions extends Component
             // Disabled grants don't affect permissions:
             if (!$grant->enabled) {
                 $logger->log(new Message([
-                    'message' => Craft::t('membership', 'The owner was’t removed from Group ID #{groupId} ({groupName}) because the grant was disabled.', [
+                    'message' => Craft::t('membership', 'Grant ID #{grantId} ({grantName}) was disabled, so the owner was not removed from user group ID #{groupId} ({groupName}).', [
+                        'grantId' => $grant->id,
+                        'grantName' => $grant->name,
                         'groupId' => $group->id,
                         'groupName' => $group->name
                     ]),
                     'grantId' => $grant->id,
-                    'subscriptionId' => $subscription->id
+                    'subscriptionId' => $subscription->id,
                 ]));
 
                 continue;
@@ -179,9 +183,12 @@ class Permissions extends Component
             // We also don't want to revoke a permission granted by a different (active) Subscription:
             if (in_array($group->id, $protectedGroupIds)) {
                 $logger->log(new Message([
-                    'message' => Craft::t('membership', 'Another active Subscription prevented the owner from being removed from Group ID #{groupId}.', ['groupId' => $group->id]),
+                    'message' => Craft::t('membership', 'Another active subscription prevented the owner from being removed from user group ID #{groupId} ({groupName}).', [
+                        'groupId' => $group->id,
+                        'groupName' => $group->name,
+                    ]),
                     'grantId' => $grant->id,
-                    'subscriptionId' => $subscription->id
+                    'subscriptionId' => $subscription->id,
                 ]));
 
                 continue;
@@ -190,7 +197,7 @@ class Permissions extends Component
             // They may not be in it:
             if (!$owner->isInGroup($group->id)) {
                 $logger->log(new Message([
-                    'message' => Craft::t('membership', 'The owner wasn’t in User Group ID #{groupId} ({groupName}), so no action was taken.', [
+                    'message' => Craft::t('membership', 'The owner wasn’t in user group ID #{groupId} ({groupName}), so no action was taken.', [
                         'groupId' => $group->id,
                         'groupName' => $group->name
                     ]),
@@ -211,7 +218,7 @@ class Permissions extends Component
             // If it was prevented, log a message and continue:
             if (!$event->isValid) {
                 $logger->log(new Message([
-                    'message' => Craft::t('membership', 'A plugin prevented the owner from being removed from User Group ID #{groupId} ({groupName}).', [
+                    'message' => Craft::t('membership', 'A plugin prevented the owner from being removed from user group ID #{groupId} ({groupName}).', [
                         'groupId' => $group->id,
                         'groupName' => $group->name
                     ]),
@@ -238,7 +245,7 @@ class Permissions extends Component
             $owner->setGroups($newGroups);
 
             $logger->log(new Message([
-                'message' => Craft::t('membership', 'Removed the owner from User Group ID #{groupId} ({groupName}).', [
+                'message' => Craft::t('membership', 'Removed the owner from user group ID #{groupId} ({groupName}).', [
                     'groupId' => $group->id,
                     'groupName' => $group->name
                 ]),
@@ -248,26 +255,5 @@ class Permissions extends Component
         }
 
         return true;
-    }
-
-    /**
-     * Compares a list of UserGroups and returns anything present in both sets.
-     * 
-     * @param UserGroup[] $a
-     * @param UserGroup[] $b
-     * @return UserGroup[] Overlap between the sets
-     */
-    private function _getGroupsOverlap(array $a, array $b): array
-    {
-        $overlap = [];
-        $bIds = ArrayHelper::getColumn($b, 'id');
-
-        foreach ($a as $group) {
-            if (in_array($group->id, $b)) {
-                $overlap[] = $group;
-            }
-        }
-
-        return $overlap;
     }
 }

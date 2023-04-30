@@ -1,16 +1,17 @@
 <?php
 /**
- * Membership plugin for Craft CMS 3.x
+ * Membership plugin for Craft CMS 4.x
  *
  * Give your users special access based on their Commerce Subscriptions.
  *
  * @link      https://oof.studio/
- * @copyright Copyright (c) 2020 oof. Studio
+ * @copyright Copyright (c) 2023 oof. Studio
  */
 
 namespace oofbar\membership\controllers;
 
 use Craft;
+use craft\web\Controller;
 
 use craft\commerce\Plugin as Commerce;
 
@@ -28,8 +29,18 @@ use oofbar\membership\models\Grant;
  * @package   Membership
  * @since     1.0.0
  */
-class GrantsController extends BaseAdminController
+class GrantsController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
+    public function beforeAction($action): bool
+    {
+        $this->requireAdmin(false);
+
+        return parent::beforeAction($action);
+    }
+
     /**
      * Displays a list of Grants to an administrator
      *
@@ -37,9 +48,20 @@ class GrantsController extends BaseAdminController
      */
     public function actionIndex()
     {
-        $grants = Membership::getInstance()->grants->getAllGrants();
+        $grants = Membership::getInstance()->getGrants()->getAllGrants();
 
-        $this->renderTemplate('membership/grants/index', compact('grants'));
+        // We’ll use this to determine whether any plans exist, and display a message...
+        $plans = Commerce::getInstance()->getPlans()->getAllPlans();
+
+        // ...same for user groups:
+        $groups = Craft::$app->getUserGroups()->getAllGroups();
+
+        return $this->renderTemplate('membership/_grants/index', [
+            'grants' => $grants,
+            'plans' => $plans,
+            'groups' => $groups,
+            'canCreateGrants' => !empty($plans) && !empty($groups),
+        ]);
     }
 
     /**
@@ -55,7 +77,7 @@ class GrantsController extends BaseAdminController
         if ($grant) {
             // Nothing to do, if one was passed via route params!
         } else if (!is_null($grantId)) {
-            $grant = Membership::getInstance()->grants->getGrantById($grantId);
+            $grant = Membership::getInstance()->getGrants()->getGrantById($grantId);
 
             if (!$grant) {
                 throw new HttpException(404, Craft::t('membership', 'The grant does not exist.'));
@@ -64,7 +86,7 @@ class GrantsController extends BaseAdminController
             $grant = new Grant;
         }
 
-        return $this->renderTemplate('membership/grants/edit', compact('grant', 'plans', 'userGroups'));
+        return $this->renderTemplate('membership/_grants/edit', compact('grant', 'plans', 'userGroups'));
     }
 
     /**
@@ -82,7 +104,7 @@ class GrantsController extends BaseAdminController
         $id = (int)$request->getBodyParam('id');
 
         if ($id) {
-            $grant = Membership::getInstance()->grants->getGrantById($id);
+            $grant = Membership::getInstance()->getGrants()->getGrantById($id);
 
             if (!$grant) {
                 throw new HttpException(404, Craft::t('membership', 'The grant does not exist.'));
@@ -96,11 +118,11 @@ class GrantsController extends BaseAdminController
         $grant->userGroupId = (int)$request->getBodyParam('userGroupId', $grant->userGroupId);
         $grant->enabled = (bool)$request->getBodyParam('enabled', $grant->enabled);
 
-        if (!Membership::getInstance()->grants->saveGrant($grant)) {
-            return $this->_sendErrorResponse(Craft::t('membership', 'Failed to save grant.'), compact('grant'));
+        if (!Membership::getInstance()->getGrants()->saveGrant($grant)) {
+            return $this->asModelFailure($grant, Craft::t('membership', 'Failed to save grant.'), 'grant');
         }
 
-        return $this->_sendSuccessResponse(Craft::t('membership', 'Grant saved.'));
+        return $this->asModelSuccess($grant, Craft::t('membership', 'Grant saved.'), 'grant');
     }
 
     /**
@@ -115,19 +137,19 @@ class GrantsController extends BaseAdminController
         $membership = Membership::getInstance();
 
         if (!$grantId) {
-            return $this->_sendErrorResponse(Craft::t('membership', 'No ID was provided'));
+            return $this->asFailure(Craft::t('membership', 'No ID was provided'));
         }
 
-        $grant = $membership->grants->getGrantById((int)$grantId);
+        $grant = $membership->getGrants()->getGrantById((int)$grantId);
 
         if (!$grant) {
-            return $this->_sendErrorResponse(Craft::t('membership', 'The grant does not exist.'));
+            return $this->asFailure(Craft::t('membership', 'The grant does not exist.'));
         }
 
-        if (!$membership->grants->deleteGrant($grant)) {
-            return $this->_sendErrorResponse(Craft::t('membership', 'The grant could not be deleted.'));
+        if (!$membership->getGrants()->deleteGrant($grant)) {
+            return $this->asModelFailure($grant, Craft::t('membership', 'The grant could not be deleted.'), 'grant');
         }
 
-        return $this->_sendSuccessResponse(Craft::t('membership', 'Grant deleted.'));
+        return $this->asModelSuccess($grant, Craft::t('membership', 'Grant deleted.'));
     }
 }
