@@ -1,5 +1,11 @@
 # Membership Plugin Changelog
 
+## 2.0.2 - 2023-05-01
+
+### Changed
+
+- Fixed URLs to readme and issues in `composer.json`.
+
 ## 2.0.1 - 2023-04-30
 
 ### Changed
