@@ -12,8 +12,8 @@
         "subscriptions"
     ],
     "support": {
-        "docs": "https://github.com/oof-bar/membership/blob/master/README.md",
-        "issues": "https://github.com/oof-bar/membership/issues"
+        "docs": "https://github.com/oof-bar/craft-membership/blob/main/README.md",
+        "issues": "https://github.com/oof-bar/craft-membership/issues"
     },
     "license": "proprietary",
     "authors": [
@@ -36,7 +36,7 @@
         "handle": "membership",
         "hasCpSettings": true,
         "hasCpSection": false,
-        "changelogUrl": "https://raw.githubusercontent.com/oof-bar/membership/master/CHANGELOG.md",
+        "changelogUrl": "https://raw.githubusercontent.com/oof-bar/craft-membership/master/CHANGELOG.md",
         "class": "oofbar\\membership\\Membership"
     }
 }
