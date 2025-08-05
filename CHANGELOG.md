@@ -1,6 +1,6 @@
 # Membership Plugin Changelog
 
-## Unreleased
+## 3.0.0 - 2025-08-05
 
 > [!IMPORTANT]  
 > After the upgrade, be sure and add the **Membership Logs** UI element to your Subscriptions field layout to preserve visibility into the plugin’s activity.
