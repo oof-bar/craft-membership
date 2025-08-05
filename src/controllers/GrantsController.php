@@ -36,7 +36,8 @@ class GrantsController extends Controller
      */
     public function beforeAction($action): bool
     {
-        $this->requireAdmin(false);
+        $this->requireCpRequest();
+        $this->requirePermission('membership:manageGrants');
 
         return parent::beforeAction($action);
     }
