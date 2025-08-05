@@ -6,7 +6,7 @@
 
 {% set crumbs = [
     { label: 'Membership' | t('membership'), url: url('membership') },
-    { label: 'Grants' | t('membership'), url: url('membership/grants') }
+    { label: 'Grants' | t('membership'), url: url('membership/grants') },
 ] %}
 
 {% block content %}
@@ -23,7 +23,7 @@
             name: 'name',
             value: grant.name,
             errors: grant.getErrors('name'),
-            first: true
+            first: true,
         }) }}
 
         {{ forms.lightswitchField({
@@ -32,27 +32,30 @@
             id: 'enabled',
             name: 'enabled',
             on: grant.enabled,
-            errors: grant.getErrors('enabled')
+            errors: grant.getErrors('enabled'),
+            warning: 'Turning this off can result in users with active subscriptions being left in groups indefinitely.' | t('membership'),
         }) }}
 
         {{ forms.selectField({
             label: 'Plan' | t('membership'),
-            instructions: 'Select the plan this grant applies to.' | t('memberhsip'),
+            instructions: 'Select the plan this grant applies to. <a href="{plansCpUrl}" class="go">Edit plans</a>' | t('membership', {
+                plansCpUrl: cpUrl('commerce/subscription-plans'),
+            }),
             id: 'planId',
             name: 'planId',
             options: plans | map((p) => { value: p.id, label: p.name }),
             value: grant.planId,
-            errors: grant.getErrors('planId')
+            errors: grant.getErrors('planId'),
         }) }}
 
         {{ forms.selectField({
             label: 'User Group' | t('membership'),
-            instructions: 'Pick the group that users will be added to.' | t('memberhsip'),
+            instructions: 'Pick the group that users will be added to.' | t('membership'),
             id: 'userGroupId',
             name: 'userGroupId',
             options: userGroups | map((ug) => { value: ug.id, label: ug.name }),
             value: grant.userGroupId,
-            errors: grant.getErrors('userGroupId')
+            errors: grant.getErrors('userGroupId'),
         }) }}
 
         <input type="submit" class="btn submit" value="{{ 'Save' | t('membership') }}">

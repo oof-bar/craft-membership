@@ -89,7 +89,7 @@ class Grant extends Model
                 'exist',
                 'targetClass' => PlanRecord::class,
                 'targetAttribute' => ['planId' => 'id'],
-                'message' => 'You must select a valid Plan.'
+                'message' => Craft::t('membership', 'You must select a valid plan.'),
             ],
 
             [['userGroupId'], 'required'],
@@ -98,7 +98,7 @@ class Grant extends Model
                 'exist',
                 'targetClass' => UserGroupRecord::class,
                 'targetAttribute' => ['userGroupId' => 'id'],
-                'message' => 'You must select a valid User Group.'
+                'message' => Craft::t('membership', 'You must select a valid user group.'),
             ],
 
             // Validate uniqueness of effect among other Grants:
