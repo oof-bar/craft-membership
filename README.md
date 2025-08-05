@@ -19,9 +19,10 @@ This plugin requires Craft CMS 5 and Commerce 5. [Version 2.x](https://github.co
 
 The 3.x upgrade should require no manual intervention, but it's always important to test your application for consistency.
 
-There are only two functional changes:
+There are only three functional changes:
 
 - Logs are no longer shown on Subscription edit screens, by default. You must add the **Membership Logs** field layout element by visiting **Commerce** &rarr; **Settings** &rarr; **Subscription Fields**.
+- A bug with grant validation was fixed, which may have allowed duplicate/identical grant configurations to exist in prior versions. The plugin now prevents saving grants that have the same plan _and_ user group as another grant.
 - A new **Manage grants** permission controls whether non-admin users can create, update, and delete grants.
 
 > [!WARNING]
