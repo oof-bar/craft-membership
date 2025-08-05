@@ -11,7 +11,9 @@
 namespace oofbar\membership\models;
 
 use Craft;
+use craft\base\CpEditable;
 use craft\base\Model;
+use craft\helpers\UrlHelper;
 use craft\models\UserGroup;
 use craft\records\UserGroup as UserGroupRecord;
 
@@ -32,7 +34,7 @@ use DateTime;
  * @package   Membership
  * @since     1.0.0
  */
-class Grant extends Model
+class Grant extends Model implements CpEditable
 {
     /**
      * @var int|null ID
@@ -131,5 +133,13 @@ class Grant extends Model
     public function getUserGroup(): UserGroup
     {
         return Craft::$app->getUserGroups()->getGroupById($this->userGroupId);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCpEditUrl(): ?string
+    {
+        return $this->id ? UrlHelper::cpUrl("membership/grants/{$this->id}") : null;
     }
 }

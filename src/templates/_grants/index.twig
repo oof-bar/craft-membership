@@ -32,9 +32,9 @@
                     <tr data-id="{{ grant.id }}" data-name="{{ grant.name }}">
                         <td>
                             <span class="status {{ grant.enabled ? 'active' : 'disabled' }}"></span>
-                            <a href="{{ cpUrl("membership/grants/#{grant.id}") }}">{{ grant.name }}</a>
+                            <a href="{{ grant.getCpEditUrl() }}">{{ grant.name }}</a>
                         </td>
-                        <td><a href="{{ cpUrl("commerce/settings/subscriptions/plan/#{plan.id}") }}">{{ plan.name }}</a></td>
+                        <td><a href="{{ plan.getCpEditUrl() }}">{{ plan.name }}</a></td>
                         <td>&rarr;</td>
                         <td><a href="{{ cpUrl("settings/users/groups/#{group.id}") }}">{{ group.name }}</a></td>
                         <td>
