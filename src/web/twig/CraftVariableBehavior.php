@@ -31,9 +31,9 @@ class CraftVariableBehavior extends Behavior
     /**
      * @var Membership
      */
-    public $membership;
+    public Membership $membership;
 
-    public function init()
+    public function init(): void
     {
         parent::init();
 
