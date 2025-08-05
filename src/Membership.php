@@ -1,11 +1,11 @@
 <?php
 /**
- * Membership plugin for Craft CMS 4.x
+ * Membership plugin for Craft CMS 5.x
  *
  * Give your users special access based on their Commerce Subscriptions.
  *
  * @link      https://oof.studio/
- * @copyright Copyright (c) 2023 oof. Studio
+ * @copyright Copyright (c) 2025 oof. Studio
  */
 
 namespace oofbar\membership;
