@@ -19,6 +19,7 @@ use yii\web\HttpException;
 
 use oofbar\membership\Membership;
 use oofbar\membership\models\Grant;
+use yii\web\Response;
 
 /**
  * Grants Controller
@@ -45,9 +46,9 @@ class GrantsController extends Controller
     /**
      * Displays a list of Grants to an administrator
      *
-     * @return mixed
+     * @return Response|null
      */
-    public function actionIndex()
+    public function actionIndex(): ?Response
     {
         $grants = Membership::getInstance()->getGrants()->getAllGrants();
 
@@ -68,9 +69,9 @@ class GrantsController extends Controller
     /**
      * Renders a new Grant form, or re-renders an in-progress one.
      *
-     * @return mixed
+     * @return Response|null
      */
-    public function actionEdit(int $grantId = null, Grant $grant = null)
+    public function actionEdit(int $grantId = null, Grant $grant = null): ?Response
     {
         $plans = Commerce::getInstance()->getPlans()->getAllPlans();
         $userGroups = Craft::$app->getUserGroups()->getAllGroups();
@@ -93,9 +94,9 @@ class GrantsController extends Controller
     /**
      * Save a new or existing Grant
      *
-     * @return mixed
+     * @return Response|null
      */
-    public function actionSave()
+    public function actionSave(): ?Response
     {
         $this->requirePostRequest();
 
@@ -128,9 +129,9 @@ class GrantsController extends Controller
     /**
      * Delete an existing Grant
      *
-     * @return mixed
+     * @return Response|null
      */
-    public function actionDelete()
+    public function actionDelete(): ?Response
     {
         $grantId = Craft::$app->getRequest()->getRequiredBodyParam('id');
 
