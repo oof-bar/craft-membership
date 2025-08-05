@@ -17,7 +17,7 @@
         {{ redirectInput('membership/grants') }}
 
         {{ forms.textField({
-            label: 'Grant Name' | t('membership'),
+            label: 'Name' | t('app'),
             instructions: 'A label or identifier for this grant.' | t('membership'),
             id: 'name',
             name: 'name',
@@ -27,17 +27,17 @@
         }) }}
 
         {{ forms.lightswitchField({
-            label: 'Enabled?' | t('membership'),
-            instructions: 'Whether or not this grant will apply to new or expiring Subscriptions.' | t('membership'),
+            label: 'Enabled' | t('app'),
+            instructions: 'Whether or not this grant will apply to new or expiring subscriptions.' | t('membership'),
             id: 'enabled',
             name: 'enabled',
             on: grant.enabled,
             errors: grant.getErrors('enabled'),
-            warning: 'Turning this off can result in users with active subscriptions being left in groups indefinitely.' | t('membership'),
+            warning: 'Turning this off can result in users with active subscriptions being left in groups, indefinitely.' | t('membership'),
         }) }}
 
         {{ forms.selectField({
-            label: 'Plan' | t('membership'),
+            label: 'Plan' | t('commerce'),
             instructions: 'Select the plan this grant applies to. <a href="{plansCpUrl}" class="go">Edit plans</a>' | t('membership', {
                 plansCpUrl: cpUrl('commerce/subscription-plans'),
             }),
@@ -50,7 +50,9 @@
 
         {{ forms.selectField({
             label: 'User Group' | t('membership'),
-            instructions: 'Pick the group that users will be added to.' | t('membership'),
+            instructions: 'Pick the group that users will be added to when they start a subscription on the selected **Plan**. <a href="{userGroupsCpUrl}" class="go">Edit user groups</a>' | t('membership', {
+                userGroupsCpUrl: cpUrl('settings/users'),
+            }),
             id: 'userGroupId',
             name: 'userGroupId',
             options: userGroups | map((ug) => { value: ug.id, label: ug.name }),
