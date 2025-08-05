@@ -21,5 +21,6 @@
  * @since     1.0.0
  */
 return [
-    'Membership plugin loaded' => 'Membership plugin loaded',
+    'Membership' => 'Membership',
+    'Grant' => 'Grant',
 ];

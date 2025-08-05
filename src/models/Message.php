@@ -17,6 +17,8 @@ use craft\commerce\records\Subscription as SubscriptionRecord;
 
 use oofbar\membership\records\Grant as GrantRecord;
 
+use DateTime;
+
 /**
  * Message Model
  *
@@ -29,39 +31,39 @@ use oofbar\membership\records\Grant as GrantRecord;
 class Message extends Model
 {
     /**
-     * @var int ID
+     * @var int|null ID
      */
-    public $id;
+    public ?int $id = null;
 
     /**
      * @var string Message body
      */
-    public $message;
+    public string $message = '';
 
     /**
-     * @var string Grant ID
+     * @var int|null Grant ID
      */
-    public $grantId;
+    public ?int $grantId = null;
 
     /**
-     * @var string Subscription ID
+     * @var int|null Subscription ID
      */
-    public $subscriptionId;
+    public ?int $subscriptionId = null;
 
     /**
-     * @var \DateTime 
+     * @var DateTime|null
      */
-    public $dateCreated;
+    public ?DateTime $dateCreated = null;
 
     /**
-     * @var \DateTime 
+     * @var DateTime|null
      */
-    public $dateUpdated;
+    public ?DateTime $dateUpdated = null;
 
     /**
-     * @var string UID
+     * @var string|null UID
      */
-    public $uid;
+    public ?string $uid = null;
 
     /**
      * @inheritdoc
@@ -86,17 +88,6 @@ class Message extends Model
                 'targetClass' => SubscriptionRecord::class,
                 'targetAttribute' => ['subscriptionId' => 'id']
             ],
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function dateTimeAttributes(): array
-    {
-        return [
-            'dateCreated',
-            'dateUpdated',
         ];
     }
 }

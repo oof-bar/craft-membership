@@ -12,7 +12,7 @@
         "subscriptions"
     ],
     "support": {
-        "docs": "https://github.com/oof-bar/craft-membership/blob/main/README.md",
+        "docs": "https://github.com/oof-bar/craft-membership/blob/v2/README.md",
         "issues": "https://github.com/oof-bar/craft-membership/issues"
     },
     "license": "proprietary",
@@ -23,8 +23,8 @@
         }
     ],
     "require": {
-        "craftcms/cms": "^4.0.0",
-        "craftcms/commerce": "^4.0.0"
+        "craftcms/cms": "^5.0.0",
+        "craftcms/commerce": "^5.0.0"
     },
     "autoload": {
         "psr-4": {
@@ -36,7 +36,7 @@
         "handle": "membership",
         "hasCpSettings": true,
         "hasCpSection": false,
-        "changelogUrl": "https://raw.githubusercontent.com/oof-bar/craft-membership/master/CHANGELOG.md",
+        "changelogUrl": "https://raw.githubusercontent.com/oof-bar/craft-membership/v2/CHANGELOG.md",
         "class": "oofbar\\membership\\Membership"
     }
 }

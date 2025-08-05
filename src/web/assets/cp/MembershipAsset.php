@@ -17,7 +17,7 @@ use craft\web\View;
 use yii\web\JqueryAsset;
 
 /**
- * AssetBundle for the Memberhip plugin's Control Panel functionality.
+ * AssetBundle for the Membership plugin's control panel functionality.
  *
  * @author    oof. Studio
  * @package   Membership

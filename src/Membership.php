@@ -12,8 +12,13 @@ namespace oofbar\membership;
 
 use Craft;
 use craft\base\Plugin;
+use craft\commerce\elements\Subscription;
+use craft\events\DefineFieldLayoutElementsEvent;
 use craft\events\RegisterUrlRulesEvent;
+use craft\events\RegisterUserPermissionsEvent;
 use craft\helpers\UrlHelper;
+use craft\models\FieldLayout;
+use craft\services\UserPermissions;
 use craft\web\UrlManager;
 use craft\web\twig\variables\CraftVariable;
 
@@ -23,6 +28,7 @@ use craft\commerce\services\Subscriptions;
 
 use yii\base\Event;
 
+use oofbar\membership\fieldlayoutelements\MembershipLogs;
 use oofbar\membership\services\Grants;
 use oofbar\membership\services\Logs;
 use oofbar\membership\services\Permissions;
@@ -30,9 +36,8 @@ use oofbar\membership\web\twig\CraftVariableBehavior;
 
 /**
  * Membership Plugin
- * 
- * This plugin is really simple, and I hope if you're reading through the source
- * that it might encourage you to implement some
+ *
+ * This plugin is relatively simple, but demonstrates a number of Craft’s practical extension points. As you read the source, you may find that the essential features can be lifted into your own application via a plugin or module. I strongly encourage this, and am happy to help with fundamentals!
  *
  * @author    oof. Studio
  * @package   Membership
@@ -89,6 +94,23 @@ class Membership extends Plugin
             }
         );
 
+        // Plugin Permissions
+
+        Event::on(
+            UserPermissions::class,
+            UserPermissions::EVENT_REGISTER_PERMISSIONS,
+            function(RegisterUserPermissionsEvent $event) {
+                $event->permissions[] = [
+                    'heading' => Craft::t('membership', 'Membership'),
+                    'permissions' => [
+                        'membership-manageGrants' => [
+                            'label' => Craft::t('membership', 'Manage grants'),
+                            'warning' => Craft::t('membership', 'This feature can allow control panel users to escalate their own permissions by defining a grant and subscribing to a plan.'),
+                        ],
+                    ],
+                ];
+            }
+        );
         // Listen for key Subscription events
 
         Event::on(
@@ -119,16 +141,21 @@ class Membership extends Plugin
             }
         );
 
-        // Display log messages with the relevant subscriptions
+        // Make the logs field layout element available in Subscription field layouts:
+        Event::on(
+            FieldLayout::class,
+            FieldLayout::EVENT_DEFINE_UI_ELEMENTS,
+            function(DefineFieldLayoutElementsEvent $event) {
+                /** @var FieldLayout $fle */
+                $fle = $event->sender;
 
-        $view = Craft::$app->getView();
+                if ($fle->type !== Subscription::class) {
+                    return;
+                }
 
-        $view->hook('cp.commerce.subscriptions.edit.content', function (array &$context) use ($view) {
-            return $view->renderTemplate('membership/_hooks/cp.commerce.subscriptions.edit', [
-                'subscription' => $context['subscription'],
-                'canManageGrants' => Craft::$app->getUser()->getIdentity()->admin,
-            ]);
-        });
+                $event->elements[] = MembershipLogs::class;
+            }
+        );
     }
 
     /**

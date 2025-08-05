@@ -21,6 +21,8 @@ use craft\commerce\records\Plan as PlanRecord;
 
 use oofbar\membership\records\Grant as GrantRecord;
 
+use DateTime;
+
 /**
  * Grant Model
  *
@@ -33,44 +35,44 @@ use oofbar\membership\records\Grant as GrantRecord;
 class Grant extends Model
 {
     /**
-     * @var int ID
+     * @var int|null ID
      */
-    public $id;
+    public ?int $id = null;
 
     /**
      * @var string Name or reference label for the Grant
      */
-    public $name;
+    public string $name = '';
 
     /**
      * @var bool Enabled
      */
-    public $enabled;
+    public bool $enabled = true;
 
     /**
-     * @var int Plan ID
+     * @var int|null Plan ID
      */
-    public $planId;
+    public ?int $planId = null;
 
     /**
-     * @var int UserGroup ID
+     * @var int|null UserGroup ID
      */
-    public $userGroupId;
+    public ?int $userGroupId = null;
 
     /**
-     * @var \DateTime
+     * @var DateTime|null
      */
-    public $dateCreated;
+    public ?DateTime $dateCreated = null;
 
     /**
-     * @var \DateTime
+     * @var DateTime|null
      */
-    public $dateUpdated;
+    public ?DateTime $dateUpdated = null;
 
     /**
-     * @var string UID
+     * @var string|null UID
      */
-    public $uid;
+    public ?string $uid = null;
 
     /**
      * @inheritdoc
@@ -105,20 +107,9 @@ class Grant extends Model
                 'unique',
                 'targetClass' => GrantRecord::class,
                 'targetAttribute' => ['planId', 'userGroupId'],
-                'filter' => ['!=', 'id', $this->id],
-                'message' => 'A grant with this combination of settings already exists.'
-            ]
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function dateTimeAttributes(): array
-    {
-        return [
-            'dateCreated',
-            'dateUpdated',
+                'filter' => ['not', ['id' => $this->id]],
+                'message' => Craft::t('membership', 'A grant with this combination of settings already exists.'),
+            ],
         ];
     }
 

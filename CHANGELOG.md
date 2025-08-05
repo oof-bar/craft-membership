@@ -1,5 +1,21 @@
 # Membership Plugin Changelog
 
+## Unreleased
+
+> [!IMPORTANT]  
+> After the upgrade, be sure and add the **Membership Logs** UI element to your Subscriptions field layout to preserve visibility into the plugin’s activity.
+
+### Added
+
+- Craft 5 compatability! 🎉
+- Non-admin users with the new **Manage grants** permission can now create and edit grants.
+- Membership is now _free_! We are working to incorporate its features into the official [Stripe plugin](https://plugins.craftcms.com/stripe), but it will remain available as a Commerce enhancement until the next major release.
+
+### Changed
+
+- Logs are now exposed via a UI field layout element and can be placed anywhere you wish on the Subscriptions field layout.
+- Spruced up some control panel views with additional help text and cross-links.
+
 ## 2.0.2 - 2023-05-01
 
 ### Changed

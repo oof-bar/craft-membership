@@ -119,11 +119,8 @@ class Grants extends Component
             return false;
         }
 
-        // Set any new properties back onto the model:
-        $grant->id = $record->id;
-        $grant->dateCreated = $record->dateCreated;
-        $grant->dateUpdated = $record->dateUpdated;
-        $grant->uid = $record->uid;
+        // Reload the model from the database:
+        $grant = $this->getGrantById($record->id);
 
         return true;
     }
