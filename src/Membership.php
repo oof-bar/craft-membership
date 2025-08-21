@@ -28,7 +28,7 @@ use craft\commerce\services\Subscriptions;
 
 use yii\base\Event;
 
-use oofbar\membership\fieldlayoutelements\MembershipLogs;
+use oofbar\membership\fieldlayoutelements\AssignmentLogs;
 use oofbar\membership\services\Grants;
 use oofbar\membership\services\Logs;
 use oofbar\membership\services\Permissions;
@@ -153,7 +153,7 @@ class Membership extends Plugin
                     return;
                 }
 
-                $event->elements[] = MembershipLogs::class;
+                $event->elements[] = AssignmentLogs::class;
             }
         );
     }
