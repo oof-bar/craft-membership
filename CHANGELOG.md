@@ -1,5 +1,9 @@
 # Membership Plugin Changelog
 
+## 3.0.1 - 2025-10-14
+
+- Fixed control panel URLs for Commerce settings screens in setup instructions.
+
 ## 3.0.0 - 2025-08-05
 
 > [!IMPORTANT]  
