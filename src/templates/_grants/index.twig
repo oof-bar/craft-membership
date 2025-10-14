@@ -54,14 +54,14 @@
             {% if plans is empty and groups is empty %}
                 <p class="largetext">
                     {{ 'To set up a grant, you must first define a [subscription plan]({plansUrl}) and a [user group]({groupsUrl}).' | t('membership', {
-                        plansUrl: cpUrl('commerce/store-settings/subscription-plans'),
+                        plansUrl: cpUrl('commerce/subscription-plans'),
                         groupsUrl: cpUrl('settings/users/groups'),
                     }) | md(inlineOnly = true) }}
                 </p>
             {% elseif plans is empty %}
                 <p class="largetext">
                     {{ 'To set up a grant, you must first define a [subscription plan]({link}).' | t('membership', {
-                        link: cpUrl('commerce/store-settings/subscription-plans'),
+                        link: cpUrl('commerce/subscription-plans'),
                     }) | md(inlineOnly = true) }}
                 </p>
             {% elseif groups is empty %}
